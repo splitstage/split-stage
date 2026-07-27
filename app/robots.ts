@@ -1,6 +1,10 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 
+/** Beim statischen Export muss ausdrücklich dranstehen, dass die Datei einmal
+ *  beim Bauen entsteht und nicht bei jedem Aufruf neu. */
+export const dynamic = "force-static";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/" },

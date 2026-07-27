@@ -11,8 +11,13 @@ export const site = {
   tagline: "Zwei Musiker. Vier Instrumente.",
   claim: "Live-Musik für Hochzeiten, Trauerfeiern und alles dazwischen.",
 
-  /** Wird für Canonical-URLs und Social-Vorschaubilder gebraucht. */
-  url: "https://split-stage.vercel.app", // TODO: nach dem Hochladen auf die echte Adresse ändern
+  /**
+   * Wird für Canonical-URLs und Social-Vorschaubilder gebraucht.
+   * Wenn ihr später eine eigene Domain verbindet (z. B. split-stage.de),
+   * gehört sie hier rein – sonst zeigen Sitemap und WhatsApp-Vorschau
+   * weiter auf die Netlify-Adresse.
+   */
+  url: "https://splitstage.netlify.app",
 
   /**
    * Solange das hier `false` ist, sagt die Seite Google „nicht aufnehmen".

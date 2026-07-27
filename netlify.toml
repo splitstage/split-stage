@@ -1,0 +1,29 @@
+# Bauanleitung für Netlify.
+#
+# Diese Datei hat Vorrang vor allem, was im Netlify-Dashboard eingestellt ist.
+# Damit ist überall dasselbe hinterlegt und nichts hängt an Klicks, an die sich
+# später niemand erinnert.
+#
+# `publish = "out"`, weil next.config.ts auf `output: "export"` steht und den
+# fertigen Ordner dorthin schreibt.
+
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Fertiges HTML und die Bilder dürfen nicht ewig im Cache hängen – sonst sehen
+# Besucher nach einer Änderung noch tagelang die alte Fassung.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Die Dateien unter /_next/static tragen einen Hash im Namen. Ändert sich etwas,
+# ändert sich der Name – die dürfen deshalb bedenkenlos lange liegen bleiben.
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
