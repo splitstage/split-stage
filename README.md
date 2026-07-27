@@ -34,14 +34,13 @@ Sucht dort nach `// TODO` – das sind alle Platzhalter:
 | Was            | Wo              | Aktuell                        |
 | -------------- | --------------- | ------------------------------ |
 | **Anschrift**  | Impressum       | **fehlt – Pflicht!**           |
-| Domain         | `site.url`      | `split-stage.vercel.app`       |
 | Instagram      | `site.socials`  | `instagram.com/splitstage` (geraten) |
 | TikTok         | `site.socials`  | `tiktok.com/@splitstage` (geraten)   |
 | YouTube        | `site.socials`  | `youtube.com/@splitstage` (geraten)  |
 | Beispiel-Songs | `setlistTeaser` | Auswahl zur Veranschaulichung  |
 
-Kontaktdaten (`splitstagebjl@gmail.com`, `01573 6236038`), die Preistabelle und
-die Namen im Impressum sind eingetragen.
+Kontaktdaten (`splitstagebjl@gmail.com`, `01573 6236038`), die Preistabelle,
+die Adresse der Seite (`site.url`) und die Namen im Impressum sind eingetragen.
 
 **Die Social-Links sind geraten.** Über eure Videos sollen die Leute ja auf die
 Seite kommen – wenn die Links ins Leere führen, funktioniert das nicht.
@@ -160,31 +159,49 @@ Dann muss aber auch Punkt 4 der Datenschutzerklärung angepasst werden.
 
 ## Online stellen
 
-Das Projekt ist fertig vorbereitet: es liegt bereits in einem Git-Repository,
-alles ist eingecheckt, der Produktions-Build läuft durch. Es fehlt nur noch ein
-Konto, auf das hochgeladen wird – und das muss einer von euch anlegen, weil
-dafür eine Anmeldung nötig ist.
+Die Seite läuft bereits: **https://splitstage.netlify.app**
 
-Einfachster Weg ist Vercel, für so eine Seite kostenlos. Dauert etwa fünf
-Minuten:
+- Code liegt auf GitHub unter `splitstage/split-stage`
+- Netlify hängt an diesem Repository und baut bei jeder Änderung neu
 
-1. Konto auf [github.com](https://github.com) anlegen, dort ein neues, leeres
-   Repository erstellen (Name egal, z. B. `split-stage`)
-2. Im Projektordner die zwei Zeilen ausführen, die GitHub euch danach anzeigt –
-   sie sehen so aus:
-   ```
-   git remote add origin https://github.com/EUER-NAME/split-stage.git
-   git push -u origin main
-   ```
-3. Auf [vercel.com](https://vercel.com) mit dem GitHub-Konto anmelden,
-   „Add New… → Project", das Repository auswählen
-4. Vercel erkennt Next.js von allein – nur auf **Deploy** klicken
-5. Danach steht die Seite unter `<name>.vercel.app`. Eigene Domain könnt ihr in
-   den Projekt-Einstellungen verbinden.
-6. **Zum Schluss `site.url` in `lib/site.ts` auf die echte Adresse ändern** –
-   sonst zeigen Google-Vorschau und Sitemap ins Leere.
+Der ganze Ablauf für eine Änderung ist deshalb:
 
-Ab dann gilt: jedes `git push` löst automatisch einen neuen Upload aus.
+```bash
+git add -A
+git commit -m "Kurz was geändert wurde"
+git push
+```
+
+Zwei Minuten später ist es live. Mehr ist es nicht – kein Hochladen per FTP,
+kein Klicken im Netlify-Dashboard.
+
+### Warum die Seite statisch gebaut wird
+
+In `next.config.ts` steht `output: "export"`. Damit entsteht beim Bauen ein
+Ordner `out/` mit fertigem HTML, und der Hoster muss nur noch Dateien
+ausliefern – er muss Next.js nicht verstehen.
+
+Das war kein Schönheitsentscheid: Netlify hat die Seite zuerst auf *allen*
+Adressen mit „404" beantwortet, weil seine Next.js-Unterstützung Version 16
+noch nicht kannte. Statisch gebaut ist das Problem strukturell weg, und die
+Seite läuft genauso auf GitHub Pages, Cloudflare oder billigem Webspace.
+
+Preis dafür: es kann nichts serverseitig laufen. Falls ihr später echten
+Formularversand über eine API-Route wollt oder `next/image` einsetzt, muss die
+Zeile wieder raus – dann braucht ihr aber auch einen Hoster, der Next.js in der
+eingesetzten Version wirklich beherrscht.
+
+Wichtig, falls ihr an `app/robots.ts` oder `app/sitemap.ts` etwas ändert: dort
+muss `export const dynamic = "force-static"` stehen bleiben, sonst bricht der
+Build ab.
+
+### Eigene Domain
+
+`splitstage.netlify.app` funktioniert, aber für Visitenkarten und Google ist
+eine eigene Adresse (z. B. `split-stage.de`) deutlich besser. In Netlify unter
+**Domain management** eintragen, das Zertifikat kommt automatisch. Danach
+**`site.url` in `lib/site.ts` auf die neue Adresse ändern** und einmal pushen,
+sonst zeigen Sitemap und WhatsApp-Vorschau weiter auf die alte.
 
 ---
 
