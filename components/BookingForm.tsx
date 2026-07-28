@@ -97,6 +97,19 @@ export default function BookingForm() {
     setStatus("sending");
 
     try {
+      /* Auf dem eigenen Rechner gibt es kein Netlify, das die Anfrage annehmen
+         könnte – der Entwicklungsserver beantwortet trotzdem jedes POST mit
+         „200 OK“. Ohne diese Abfrage meldet das Formular beim lokalen Testen
+         „Angekommen“, obwohl nichts angekommen ist. Genau diese Sorte falsche
+         Erfolgsmeldung war der ursprüngliche Fehler; sie hier wieder
+         einzubauen wäre albern. */
+      if (
+        location.hostname === "localhost" ||
+        location.hostname === "127.0.0.1"
+      ) {
+        throw new Error("kein Netlify auf localhost");
+      }
+
       /* Netlify erwartet die Felder so, wie ein Browser ein Formular ohne
          JavaScript abschicken würde – inklusive `form-name`. */
       const res = await fetch("/", {
