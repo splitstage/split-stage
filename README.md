@@ -92,6 +92,7 @@ app/datenschutz/            Datenschutzerklärung
 components/Hero.tsx         Startbild: Splitscreen + Parallax beim Scrollen
 components/Nav.tsx          Navigation
 components/BookingForm.tsx  Anfrageformular
+components/MobileBar.tsx    Leiste unten am Bildschirmrand (nur Handy/Tablet)
 components/Footer.tsx       Fußzeile
 components/Reveal.tsx       Einblenden beim Scrollen
 public/hero.jpg             Das Wohnzimmer-Bild
@@ -119,6 +120,32 @@ sich das Bild schneller als die Seite und oben blitzt eine Lücke auf.
 Wer im Betriebssystem „Bewegung reduzieren" eingeschaltet hat, bekommt keinen
 Parallax – das ist Absicht.
 
+### Handy-Ansicht
+
+Alles, was nur auf Handys und Tablets gilt, steht gesammelt am Ende von
+`app/globals.css` unter „MOBILGERÄTE" – nicht verteilt über die einzelnen
+Bausteine. So sieht man auf einen Blick, was dort anders ist, ohne die
+Desktop-Regeln anzufassen.
+
+Drei Sachen sind dort wichtig:
+
+- **Eingabefelder haben auf Touchgeräten 16px Schrift.** Nicht kleiner machen.
+  Safari zoomt beim Antippen automatisch hinein, sobald ein Feld kleiner als
+  16px ist, und zoomt nicht von allein wieder heraus. Die Regel hängt bewusst an
+  `@media (hover: none)` statt an einer Bildschirmbreite – ein iPad im
+  Hochformat ist 768px breit und zoomt genauso.
+- **Die Leiste unten** (`components/MobileBar.tsx`) erscheint ab einer
+  Bildschirmbreite von 880px abwärts – also überall dort, wo die Navigation zum
+  Burger-Menü zusammenklappt und der Buchen-Knopf sonst nicht sichtbar wäre. Sie
+  taucht erst hinter dem Startbild auf und zieht sich zurück, sobald das
+  Anfrageformular oder die Fußzeile im Bild ist.
+- **`env(safe-area-inset-bottom)`** hält Leiste und Fußzeile über dem
+  Home-Balken neuerer iPhones. Beim Ändern der Abstände dort stehen lassen.
+
+Wenn euch die Leiste auf dem iPad zu viel ist: in `globals.css` beim
+`@media (max-width: 880px)` über `.mobileBar { display: flex; }` die Zahl auf
+`720px` setzen, dann erscheint sie nur noch auf Handys.
+
 ### Farben ändern
 
 Ganz oben in `app/globals.css`:
@@ -144,16 +171,42 @@ haben, sonst geht der Effekt verloren.
 
 ## Wie das Anfrageformular funktioniert
 
-Es verschickt **nichts** an einen Server. Es baut aus den Eingaben eine fertige
-Nachricht und öffnet damit das E-Mail-Programm oder WhatsApp. Vorteil: kein
-Backend, keine Kosten, kein Datenschutz-Ärger. Nachteil: Leute mit einem nicht
-eingerichteten Mail-Programm landen im Leeren – deshalb steht die E-Mail-Adresse
-zusätzlich immer sichtbar daneben.
+Der Versand läuft über **Netlify Forms** – das ist in eurem Netlify-Konto
+eingebaut, kostet nichts (bis 100 Anfragen im Monat) und braucht keinen weiteren
+Dienst. Netlify durchsucht beim Hochladen das fertige HTML nach
+`<form data-netlify="true">`, nimmt die Einträge entgegen und schickt sie euch
+per E-Mail.
 
-Wenn ihr später echten Formularversand wollt (Anfrage kommt direkt an, ohne dass
-sich ein Mailprogramm öffnet): in `components/BookingForm.tsx` die Funktion
-`openMail` durch einen `fetch()` auf Formspree, Web3Forms oder Resend ersetzen.
-Dann muss aber auch Punkt 4 der Datenschutzerklärung angepasst werden.
+### Einmalig in Netlify einschalten
+
+Ohne diese zwei Schritte kommt nichts an:
+
+1. **Project configuration → Forms → Form detection aktivieren**, danach einmal
+   neu deployen (in „Deploys" auf *Trigger deploy*). Erst dann findet Netlify
+   das Formular.
+2. **Forms → Settings → Form notifications → Add notification → Email
+   notification** und dort `splitstagebjl@gmail.com` eintragen. Sonst landen die
+   Anfragen zwar im Netlify-Dashboard, aber ihr bekommt keine Nachricht davon.
+
+Eingegangene Anfragen stehen dauerhaft unter **Forms → anfrage**.
+
+### Wenn der Versand fehlschlägt
+
+Dann verschwindet nichts: die Eingaben bleiben stehen und darunter erscheinen
+zwei Knöpfe, die schon fertig ausgefüllt sind – WhatsApp und „Im Mailprogramm
+öffnen". Beide funktionieren auch ohne Netlify.
+
+Diese zwei Wege stehen ohnehin immer da. Vorher war der mailto-Link der
+*einzige* Weg, und das war der Fehler: er funktioniert nur mit eingerichtetem
+Mailprogramm auf dem Gerät. Wer Gmail im Browser benutzt, hat auf „Anfrage
+abschicken" geklickt und es passierte nichts – ohne jede Fehlermeldung.
+
+### Spam
+
+Im Formular steckt ein unsichtbares Feld (`bot-field`). Menschen sehen es nicht,
+automatische Skripte füllen es aus – und Netlify wirft solche Einträge weg.
+Reicht das irgendwann nicht mehr, lässt sich in Netlify zusätzlich ein Captcha
+zuschalten.
 
 ---
 

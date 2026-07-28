@@ -13,13 +13,16 @@ export default function Datenschutz() {
       <h1>Datenschutz&shy;erklärung</h1>
 
       <p className="notice">
-        <strong>Hier fehlt noch die Anschrift</strong> (gleiche wie im
-        Impressum). Alles andere passt zu der Seite, so wie sie jetzt gebaut ist
-        – ohne Cookies, ohne Tracking, ohne Analyse-Tools. Sobald ihr etwas
-        hinzufügt (Google Analytics, ein eingebettetes Instagram-Video, ein
-        Newsletter-Tool, ein Kontaktformular mit echtem Serverversand), muss
-        dieser Text erweitert werden. Danach diesen Kasten löschen. Das hier ist
-        keine Rechtsberatung.
+        <strong>Hier fehlen noch zwei Angaben:</strong> eure Anschrift (gleiche
+        wie im Impressum) und die vollständige Adresse von Netlify unter Punkt 3
+        – die steht im Impressum auf netlify.com. Außerdem solltet ihr in eurem
+        Netlify-Konto den Auftragsverarbeitungsvertrag (DPA) abschließen, weil
+        das Anfrageformular jetzt über Netlify läuft. Alles andere passt zu der
+        Seite, so wie sie gebaut ist: ohne Cookies, ohne Tracking, ohne
+        Analyse-Tools. Kommt später etwas dazu (Google Analytics, ein
+        eingebettetes Instagram-Video, ein Newsletter-Tool), muss dieser Text
+        erweitert werden. Danach diesen Kasten löschen. Das hier ist keine
+        Rechtsberatung.
       </p>
 
       <h2>1. Verantwortlicher</h2>
@@ -57,20 +60,38 @@ export default function Datenschutz() {
         fehlerfreien Darstellung und Sicherheit dieser Website.
       </p>
       <p>
-        Hosting-Anbieter: [Name und Anschrift eintragen, sobald die Seite
-        online ist]. Wenn ihr bei einem Anbieter außerhalb der EU hostet – zum
-        Beispiel Vercel oder Netlify, beide USA – gehört an diese Stelle
-        zusätzlich ein Hinweis auf die Datenübermittlung in ein Drittland nach
-        Art. 44 ff. DSGVO.
+        Diese Website wird gehostet von der Netlify, Inc., San Francisco,
+        Kalifornien, USA [vollständige Anschrift aus dem Impressum von
+        netlify.com übernehmen]. Die Server stehen damit außerhalb der
+        Europäischen Union. Die Übermittlung stützt sich auf die
+        Standardvertragsklauseln der EU-Kommission nach Art. 46 Abs. 2 lit. c
+        DSGVO; ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO ist mit
+        Netlify abzuschließen. Trotz dieser Garantien lässt sich nicht
+        vollständig ausschließen, dass US-Behörden auf die Daten zugreifen.
       </p>
 
       <h2>4. Anfrageformular</h2>
       <p>
-        Das Formular auf dieser Seite überträgt eure Eingaben nicht an unseren
-        Server. Es öffnet lediglich euer E-Mail-Programm beziehungsweise
-        WhatsApp mit einer fertig vorbereiteten Nachricht. Ob ihr sie
-        abschickt, entscheidet ihr. Erst mit dem Absenden erreichen uns eure
-        Daten – dann auf demselben Weg wie jede andere E-Mail oder Nachricht.
+        Wenn ihr das Formular abschickt, werden die eingegebenen Daten – Name,
+        E-Mail-Adresse, gegebenenfalls Telefonnummer, Anlass, Datum, Ort, Dauer
+        und eure Nachricht – an unseren Hoster Netlify (siehe Punkt 3)
+        übermittelt, dort gespeichert und uns per E-Mail zugestellt. Das dient
+        allein der Bearbeitung eurer Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1
+        lit. b DSGVO, weil die Verarbeitung zur Anbahnung eines Vertrags
+        erfolgt.
+      </p>
+      <p>
+        Da Netlify seinen Sitz in den USA hat, gilt hierfür der Hinweis zur
+        Drittlandsübermittlung aus Punkt 3. Wer das vermeiden möchte, erreicht
+        uns genauso gut telefonisch, per WhatsApp oder mit einer ganz normalen
+        E-Mail – die Buttons unter dem Formular führen direkt dorthin, ohne dass
+        Daten über das Formular laufen.
+      </p>
+      <p>
+        Wir löschen die über das Formular eingegangenen Anfragen, sobald sie
+        nicht mehr erforderlich sind – spätestens, wenn feststeht, dass es zu
+        keiner Buchung kommt, oder nach Ablauf gesetzlicher
+        Aufbewahrungsfristen.
       </p>
 
       <h2>5. Kontaktaufnahme per E-Mail, Telefon oder WhatsApp</h2>

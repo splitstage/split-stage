@@ -1486,6 +1486,104 @@ img {
   background: var(--line);
 }
 
+/* Die beiden Alternativen unter dem Absende-Knopf. Nebeneinander, solange
+   der Platz reicht – sonst untereinander. */
+.form__alt {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+@media (max-width: 520px) {
+  .form__alt {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Spam-Falle. Nicht `display: none`: manche Automaten überspringen genau das.
+   Aus dem Bild geschoben füllen sie es dagegen brav aus – und verraten sich. */
+.form__trap {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.form__error {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #ffd9c2;
+  background: rgba(255, 139, 61, 0.1);
+  border: 1px solid rgba(255, 139, 61, 0.4);
+  border-radius: var(--r-sm);
+  padding: 0.75rem 0.9rem;
+}
+
+/* ---------- Bestätigung nach dem Absenden ---------- */
+
+.form--done {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: start;
+  align-content: center;
+  /* Ungefähr so hoch wie das Formular, damit die Seite beim Umschalten nicht
+     unter dem Daumen zusammenklappt. */
+  min-height: 340px;
+}
+
+.formDone__mark {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0;
+  border-radius: 50%;
+  color: var(--cool);
+  background: rgba(92, 179, 255, 0.12);
+  border: 1px solid rgba(92, 179, 255, 0.45);
+  animation: markIn 0.5s var(--ease) both;
+}
+
+@keyframes markIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.formDone__title {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  line-height: 1;
+  margin: 0;
+}
+
+.formDone__text {
+  margin: 0;
+  color: var(--soft);
+  line-height: 1.6;
+}
+
+.formDone__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 0.4rem;
+}
+
 /* ============================================================
    FOOTER
    ============================================================ */
@@ -1623,6 +1721,182 @@ img {
 .reveal[data-shown="true"] {
   opacity: 1;
   transform: none;
+}
+
+/* ============================================================
+   MOBILGERÄTE
+   Gesammelt hier unten statt verteilt in den einzelnen Bausteinen –
+   so lässt sich auf einen Blick sehen, was auf dem Handy anders ist,
+   ohne die Desktop-Regeln anzufassen.
+   ============================================================ */
+
+/* ---------- Touch-Bedienung, unabhängig von der Breite ---------- */
+
+a,
+button,
+summary,
+.btn,
+input,
+select,
+textarea {
+  /* Der graue Kasten, den Android beim Antippen über Links legt, sieht auf
+     dunklem Grund aus wie ein Darstellungsfehler. Die Rückmeldung kommt
+     stattdessen unten aus :active. */
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none) {
+  /* Ohne Mauszeiger gibt es kein :hover – ohne Ersatz fühlt sich jeder Knopf
+     tot an, weil beim Drücken sichtbar nichts passiert. */
+  .btn,
+  .card,
+  .price,
+  .videoCard,
+  .directLink,
+  .chip {
+    transition: transform 0.14s var(--ease), background 0.2s, border-color 0.2s;
+  }
+  .btn:active,
+  .card:active,
+  .price:active,
+  .videoCard:active,
+  .directLink:active {
+    transform: scale(0.98);
+  }
+  /* Hover-Effekte, die am Finger „kleben bleiben“, hier abschalten. */
+  .btn:hover {
+    transform: none;
+  }
+
+  /* Der wichtigste Punkt auf dieser ganzen Liste: Safari zoomt beim Antippen
+     eines Eingabefeldes automatisch hinein, sobald dessen Schrift kleiner als
+     16px ist – und zoomt nicht von allein wieder heraus. Man steht dann mitten
+     im Formular in einer verschobenen Seite und muss mit zwei Fingern zurück.
+     Bewusst an „kein Mauszeiger“ gehängt und nicht an eine Breite: das iPad im
+     Hochformat ist 768px breit und zoomt genauso. */
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 16px;
+  }
+}
+
+/* ---------- Handy ---------- */
+
+@media (max-width: 720px) {
+  /* Etwas mehr Fläche pro Feld – mit dem Daumen zielt man ungenauer als mit
+     einem Mauszeiger. (Die Schriftgröße steckt oben bei „kein Mauszeiger“.) */
+  .field input,
+  .field select,
+  .field textarea {
+    padding: 0.95rem 1rem;
+  }
+
+  .field textarea {
+    min-height: 132px;
+  }
+
+  /* Etwas Luft zwischen den Feldern: mit dem Daumen trifft man sonst beim
+     Weiterspringen das Nachbarfeld. */
+  .form__grid {
+    gap: 1.15rem;
+  }
+
+  /* Auf 17 Bildschirmen Länge summieren sich 72px oben und unten je
+     Abschnitt zu reinem Leerlauf. Etwas dichter gesetzt liest es sich
+     zusammenhängender, ohne gedrängt zu wirken. */
+  .section {
+    padding-block: 3.6rem;
+  }
+
+  .sectionHead {
+    margin-bottom: 2rem;
+  }
+
+  /* Fußzeilen-Links lagen bei 38–42px. Unter etwa 44px trifft man mit dem
+     Daumen zuverlässig den Nachbarn statt des gewünschten Links. */
+  .footer__links a,
+  .footer__nav a,
+  .footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* Damit die feste Leiste unten nichts verdeckt, wenn man ganz unten steht. */
+  .footer {
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* ---------- Mitlaufende Leiste unten ---------- */
+
+.mobileBar {
+  display: none;
+  position: fixed;
+  inset: auto 0 0 0;
+  /* Unter der Navigation (60), über allem anderen. */
+  z-index: 55;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.6rem var(--pad);
+  padding-bottom: calc(0.6rem + env(safe-area-inset-bottom));
+  background: rgba(8, 8, 11, 0.88);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--line);
+  transform: translateY(120%);
+  transition: transform 0.38s var(--ease);
+}
+
+@media (max-width: 880px) {
+  .mobileBar {
+    display: flex;
+  }
+}
+
+.mobileBar[data-visible="true"] {
+  transform: none;
+}
+
+.mobileBar__call,
+.mobileBar__wa {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink);
+}
+
+.mobileBar__wa {
+  color: #7fe0a0;
+  border-color: rgba(127, 224, 160, 0.4);
+  background: rgba(127, 224, 160, 0.1);
+}
+
+.mobileBar__cta {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding-inline: 1.1rem;
+  border-radius: 999px;
+  font-size: 0.97rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  background: linear-gradient(100deg, var(--warm), #ffb066);
+  color: #180f06;
+  box-shadow: 0 10px 30px -14px rgba(255, 139, 61, 0.9);
+}
+
+.mobileBar__call:active,
+.mobileBar__wa:active,
+.mobileBar__cta:active {
+  transform: scale(0.96);
 }
 
 @media (prefers-reduced-motion: reduce) {

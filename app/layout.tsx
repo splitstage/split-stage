@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Anton, Inter } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import MobileBar from "@/components/MobileBar";
 import { site, pricing } from "@/lib/site";
 import "./globals.css";
 
@@ -123,6 +124,7 @@ export default function RootLayout({
         <Nav />
         <main>{children}</main>
         <Footer />
+        <MobileBar />
       </body>
     </html>
   );
